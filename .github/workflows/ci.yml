@@ -1,9 +1,15 @@
-name: ci
+name: CI
 
 on:
-  push:
-    branches:
-      - v3
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version of the Crowdin CLI'
+        required: true
+      latest:
+        description: 'Whether the new image should be tagged as latest'
+        required: false
+        default: 'true'
 
 env:
   IMAGE_NAME: crowdin-docker
@@ -14,6 +20,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: Process tags
+      id: tags
+      run: |
+        if [[ ${{ github.event.inputs.latest }} == 'true' ]]; then export tags=latest,; fi 
+        export tags="$tags"${{ github.event.inputs.version }}
+        echo "::set-output name=tags::$tags"
+    - name: Docker meta
+      id: docker_meta
+      uses: crazy-max/ghaction-docker-meta@v1
+      with:
+        images: ${{ github.repository_owner }}/{{ env.IMAGE_NAME }},ghcr.io/${{ github.repository_owner }}/{{ env.IMAGE_NAME }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
@@ -36,19 +54,14 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: Build and push
       uses: docker/build-push-action@v2
       with:
         context: .
         file: ./Dockerfile
         push: true
-        tags: |
-          felixoi/crowdin-docker:v3-latest
-          felixoi/crowdin-docker:v3
-          felixoi/crowdin-docker:latest
-          ghcr.io/felixoi/crowdin-docker:v3-latest
-          ghcr.io/felixoi/crowdin-docker:v3
-          ghcr.io/felixoi/crowdin-docker:latest
+        tags: {{ steps.tags.outputs.tags }}
         labels: ${{ steps.docker_meta.outputs.labels }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
