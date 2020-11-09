@@ -13,7 +13,6 @@ env:
 jobs:
   publish-docker:
     runs-on: ubuntu-latest
-    needs: build
     steps:
     -  name: Docker meta
        id: docker_meta
