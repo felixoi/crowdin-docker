@@ -31,7 +31,7 @@ jobs:
       id: docker_meta
       uses: crazy-max/ghaction-docker-meta@v1
       with:
-        images: ${{ github.repository_owner }}/{{ env.IMAGE_NAME }},ghcr.io/${{ github.repository_owner }}/{{ env.IMAGE_NAME }}
+        images: ${{ github.repository_owner }}/${{ env.IMAGE_NAME }},ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
@@ -60,6 +60,8 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
+        build-args: |
+          CLI_VERSION=${{ github.event.inputs.version }}
         push: true
         tags: ${{ steps.tags.outputs.tags }}
         labels: ${{ steps.docker_meta.outputs.labels }}
