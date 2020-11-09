@@ -1,6 +1,5 @@
 FROM alpine:latest
 MAINTAINER Felix Kleinekathoefer <dev@felixoi.com>
-LABEL org.opencontainers.image.source https://github.com/felixoi/crowdin-docker
 
 RUN apk add --no-cache openjdk11-jre
 
