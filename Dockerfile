@@ -7,7 +7,7 @@ RUN apk add --no-cache openjdk11-jre
 
 RUN mkdir /crowdin && \
     cd /crowdin && \ 
-    wget -O crowdin.zip https://github.com/crowdin/crowdin-cli/releases/download/$CLI_VERSION/crowdin-cli.zip && \
+    wget -O crowdin.zip https://github.com/crowdin/crowdin-cli/releases/download/${CLI_VERSION}/crowdin-cli.zip && \
     unzip crowdin.zip && \
     rm crowdin.zip && \
     cd $(ls) && \
