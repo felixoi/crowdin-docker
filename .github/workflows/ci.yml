@@ -59,5 +59,4 @@ jobs:
        with:
          username: ${{ secrets.DOCKERHUB_USERNAME }}
          password: ${{ secrets.DOCKERHUB_TOKEN }}
-         repository: ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
          
