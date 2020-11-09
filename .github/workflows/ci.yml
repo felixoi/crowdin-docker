@@ -24,8 +24,10 @@ jobs:
     - name: Process tags
       id: tags
       run: |
-        if [[ ${{ github.event.inputs.latest }} == 'true' ]]; then export tags=latest,; fi 
-        export tags="$tags"${{ github.event.inputs.version }}
+        if [[ ${{ github.event.inputs.latest }} == 'true' ]];
+          then export tags=${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest,ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest,; 
+        fi 
+        export tags="$tags"${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }},ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}
         echo "::set-output name=tags::$tags"
     - name: Docker meta
       id: docker_meta
