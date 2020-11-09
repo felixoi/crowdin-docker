@@ -42,13 +42,13 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: v3-latest,v3,latest
+        tags: |
+          felixoi/crowdin-docker:v3-latest
+          felixoi/crowdin-docker:v3
+          felixoi/crowdin-docker:latest
+          ghcr.io/felixoi/crowdin-docker:v3-latest
+          ghcr.io/felixoi/crowdin-docker:v3
+          ghcr.io/felixoi/crowdin-docker:latest
         labels: ${{ steps.docker_meta.outputs.labels }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
-#    -  name: Update repo description
-#       uses: peter-evans/dockerhub-description@v2
-#       with:
-#         username: ${{ secrets.DOCKERHUB_USERNAME }}
-#         password: ${{ secrets.DOCKERHUB_TOKEN }}
-         
