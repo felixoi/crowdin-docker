@@ -14,3 +14,4 @@ RUN mkdir /crowdin && \
     ./install-crowdin-cli.sh && \
     rm -rf /crowdin
 
+RUN crowdin -V
